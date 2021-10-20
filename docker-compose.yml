@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+    image: myugen/kotlin-spring-boilerplate:latest
+    container_name: kotlin-spring-boilerplate_app
+    tty: true
+    ports:
+      - "8080:8080"
+    networks:
+      - default-net
+
+networks:
+  default-net:
+    driver: bridge
