@@ -1,5 +1,5 @@
 ARG GRADLE_VERSION="7-jdk11"
-ARG TOMCAT_VERSION="10-jdk11-openjdk-slim-bullseye"
+ARG JAVA_VERSION="11-alpine"
 
 FROM gradle:${GRADLE_VERSION} as cached_gradle
 
@@ -22,14 +22,14 @@ ENV GRADLE_USER_HOME /home/builder
 COPY --from=cached_gradle --chown=builder:builder /home/gradle/cached/ /home/builder/.gradle/
 COPY --chown=builder:builder . /home/builder
 WORKDIR /home/builder
-RUN gradle bootWar -x test -i --stacktrace
+RUN gradle bootJar -x test -i --stacktrace
 
 
-FROM tomcat:${TOMCAT_VERSION} as server
+FROM amazoncorretto:${JAVA_VERSION} as app
 
 WORKDIR /app
-COPY --from=builder /home/builder/build/libs/kotlin-spring-boilerplate-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=builder /home/builder/build/libs/kotlin-spring-boilerplate-0.0.1-SNAPSHOT.jar ./kotlin-spring-boilerplate.jar
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+CMD ["java","-jar","kotlin-spring-boilerplate.jar"]
