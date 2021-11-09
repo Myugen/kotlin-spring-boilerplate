@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - property:
+      dbms: mysql,h2
+      name: now
+      value: now()
+  - property:
+      dbms: postgresql
+      name: now
+      value: current_timestamp
+  - property:
+      dbms: oracle
+      name: now
+      value: sysdate
+  - property:
+      dbms: mssql
+      name: now
+      value: getdate()
+  - changeSet:
+      author: "myugen"
+      id: "changelog-1.0_1"
+      changes:
+        - createTable:
+            tableName: "users"
+            columns:
+              - column:
+                  name: "id"
+                  type: "uuid"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: "pk_users"
+              - column:
+                  name: "username"
+                  type: "varchar(255)"
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: "name"
+                  type: "varchar(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "mail"
+                  type: "varchar(255)"
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: "created_on"
+                  type: "timestamp"
+                  constraints:
+                    defaultValue: ${now}
+                    nullable: false
+              - column:
+                  name: "created_by"
+                  type: "varchar(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "modified_on"
+                  type: "timestamp"
+                  constraints:
+                    defaultValue: ${now}
+                    nullable: false
+              - column:
+                  name: "modified_by"
+                  type: "varchar(255)"
+                  constraints:
+                    nullable: false
