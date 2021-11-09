@@ -1,11 +1,10 @@
 package com.github.myugen.kotlinspringboilerplate.model
 
-import java.util.*
 import javax.validation.ConstraintViolationException
 import javax.validation.Validation
 
-interface Identifiable {
-    val id: UUID?
+interface Identifiable<T> {
+    val id: T?
 }
 
 @Suppress("UNCHECKED_CAST")
